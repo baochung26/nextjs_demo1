@@ -35,9 +35,9 @@ export async function getStaticPaths() {
   client.close();
 
   return {
-    // false những trang không có trong paths sẽ trả về 404,
-    // true sẽ trả về trang trống và đợi dữ liệu
-    // blocking sẽ chỉ hiển thị khi dữ liệu đã được nạp đầy đủ
+    // false những trang không có trong paths tại thời điểm deploy sẽ trả về 404,
+    // true kiểm tra lại nếu có sẽ trả về trang trống và đợi dữ liệu, không có sẽ trả về 404
+    // blocking kiểm tra lại và  sẽ chỉ hiển thị khi dữ liệu đã được nạp đầy đủ, không có sẽ trả về 404
     fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
@@ -77,6 +77,7 @@ export async function getStaticProps(context) {
         description: selectedMeetup.description,
       },
     },
+    revalidate: 1, // nếu dữ liệu thay đổi liên tục thì cập nhật lại mỗi s
   };
 }
 
