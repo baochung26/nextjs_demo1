@@ -18,8 +18,12 @@ function HomePage(props) {
       <Head>
         <title>React Meetups</title>
         <meta
-          name='description'
-          content='Browse a huge list of highly active React meetups!'
+          name="description"
+          content="Browse a huge list of highly active React meetups!"
+        />
+        <meta
+          name="google-site-verification"
+          content="ooccOi5i3QSY2BEKvsQ-vamETsBYOPUjyIHRPJnsSL4"
         />
       </Head>
       <MeetupList meetups={props.meetups} />;
