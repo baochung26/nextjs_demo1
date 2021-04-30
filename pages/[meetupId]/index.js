@@ -1,15 +1,15 @@
-import { MongoClient, ObjectId } from 'mongodb';
-import { Fragment } from 'react';
-import Head from 'next/head';
+import { MongoClient, ObjectId } from "mongodb";
+import { Fragment } from "react";
+import Head from "next/head";
 
-import MeetupDetail from '../../components/meetups/MeetupDetail';
+import MeetupDetail from "../../components/meetups/MeetupDetail";
 
 function MeetupDetails(props) {
   return (
     <Fragment>
       <Head>
         <title>{props.meetupData.title}</title>
-        <meta name='description' content={props.meetupData.description} />
+        <meta name="description" content={props.meetupData.description} />
       </Head>
       <MeetupDetail
         image={props.meetupData.image}
@@ -27,7 +27,7 @@ export async function getStaticPaths() {
   );
   const db = client.db();
 
-  const meetupsCollection = db.collection('meetups');
+  const meetupsCollection = db.collection("meetups");
 
   const meetups = await meetupsCollection.find({}, { _id: 1 }).toArray();
   console.log(meetups);
@@ -35,6 +35,9 @@ export async function getStaticPaths() {
   client.close();
 
   return {
+    // false những trang không có trong paths sẽ trả về 404,
+    // true sẽ trả về trang trống và đợi dữ liệu
+    // blocking sẽ chỉ hiển thị khi dữ liệu đã được nạp đầy đủ
     fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
@@ -56,7 +59,7 @@ export async function getStaticProps(context) {
   );
   const db = client.db();
 
-  const meetupsCollection = db.collection('meetups');
+  const meetupsCollection = db.collection("meetups");
 
   const selectedMeetup = await meetupsCollection.findOne({
     _id: ObjectId(meetupId),
